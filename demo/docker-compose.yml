@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"  # Exponer el puerto 8080
+    environment:
+      - DATABASE_URL=jdbc:sqlserver://db:1433;databaseName=aiwoodworks
+      - DATABASE_USERNAME=kevin
+      - DATABASE_PASSWORD=$TecS4kev$
+      - REDIS_HOST=redis
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=$tecS4kev$
+    ports:
+      - "1433:1433"  # Exponer el puerto de SQL Server
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"  # Exponer el puerto de Redis
